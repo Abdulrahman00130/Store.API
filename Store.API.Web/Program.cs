@@ -1,9 +1,14 @@
 
+using Microsoft.EntityFrameworkCore;
+using Store.API.Domain.Contracts;
+using Store.API.Persistence;
+using Store.API.Persistence.Data.Contexts;
+
 namespace Store.API.Web
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +19,17 @@ namespace Store.API.Web
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddDbContext<StoreDbContext>(options =>
+                    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+            );
+
+            builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+
             var app = builder.Build();
+
+            using var scoped = app.Services.CreateScope();
+            var dbInitializer = scoped.ServiceProvider.GetRequiredService<IDbInitializer>();
+            await dbInitializer.InitializeAsync();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
