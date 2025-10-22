@@ -27,7 +27,7 @@ namespace Store.API.Persistence
             // ProductBrands
             if(!_context.ProductBrands.Any())
             {
-                var brandsData = await File.ReadAllTextAsync(@"..\Infrastructure\Store.API.Persistence\DataSeeding\brands.json");
+                var brandsData = await File.ReadAllTextAsync(@"..\Infrastructure\Store.API.Persistence\Data\DataSeeding\brands.json");
                 var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandsData);
                 if(brands is not null && brands.Count > 0)
                 {
@@ -38,7 +38,7 @@ namespace Store.API.Persistence
             // ProductTypes
             if(!_context.ProductTypes.Any())
             {
-                var typesData = await File.ReadAllTextAsync(@"..\Infrastructure\Store.API.Persistence\DataSeeding\types.json");
+                var typesData = await File.ReadAllTextAsync(@"..\Infrastructure\Store.API.Persistence\Data\DataSeeding\types.json");
                 var types = JsonSerializer.Deserialize<List<ProductType>>(typesData);
                 if(types is not null && types.Count > 0)
                 {
@@ -49,7 +49,7 @@ namespace Store.API.Persistence
             // Products
             if(!_context.Products.Any())
             {
-                var productsData = await File.ReadAllTextAsync(@"..\Infrastructure\Store.API.Persistence\DataSeeding\products.json");
+                var productsData = await File.ReadAllTextAsync(@"..\Infrastructure\Store.API.Persistence\Data\DataSeeding\products.json");
                 var products = JsonSerializer.Deserialize<List<Product>>(productsData);
                 if(products is not null && products.Count > 0)
                 {

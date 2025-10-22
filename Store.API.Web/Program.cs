@@ -3,6 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Store.API.Domain.Contracts;
 using Store.API.Persistence;
 using Store.API.Persistence.Data.Contexts;
+using Store.API.Presentation;
+using Store.API.Services;
+using Store.API.Services.Abstractions;
+using Store.API.Services.Mapping.Products;
 
 namespace Store.API.Web
 {
@@ -24,6 +28,11 @@ namespace Store.API.Web
             );
 
             builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddAutoMapper(o => o.AddProfile(new ProductProfile()));
+
+            builder.Services.AddScoped<IServiceManager, ServiceManager>();
 
             var app = builder.Build();
 

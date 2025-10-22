@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Store.API.Domain.Entities.Products;
 using System;
@@ -7,11 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Store.API.Persistence.Configurations
+namespace Store.API.Persistence.Data.Configurations
 {
-    public class ProductTypeConfiguration : IEntityTypeConfiguration<ProductType>
+    public class ProductBrandConfiguration : IEntityTypeConfiguration<ProductBrand>
     {
-        public void Configure(EntityTypeBuilder<ProductType> builder)
+        public void Configure(EntityTypeBuilder<ProductBrand> builder)
         {
             builder.Property(p => p.Name).HasColumnType("varchar(256)");
         }
