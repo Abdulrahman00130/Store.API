@@ -30,7 +30,7 @@ namespace Store.API.Web
             builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddAutoMapper(o => o.AddProfile(new ProductProfile()));
+            builder.Services.AddAutoMapper(o => o.AddProfile(new ProductProfile(builder.Configuration)));
 
             builder.Services.AddScoped<IServiceManager, ServiceManager>();
 
@@ -41,6 +41,9 @@ namespace Store.API.Web
             await dbInitializer.InitializeAsync();
 
             // Configure the HTTP request pipeline.
+
+            app.UseStaticFiles();
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
