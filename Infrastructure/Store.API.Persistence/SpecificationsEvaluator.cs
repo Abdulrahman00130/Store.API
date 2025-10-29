@@ -17,11 +17,29 @@ namespace Store.API.Persistence
         {
             var query = inputQuery;     // _context.Products
 
+            // filtering
             if (spec.Criteria is not null)
             {
                 query = query.Where(spec.Criteria); // _context.Products.Where(criteria)
             }
 
+            // sorting
+            if(spec.OrderBy is not null)
+            {
+                query = query.OrderBy(spec.OrderBy);
+            }
+            else if (spec.OrderByDescending is not null)
+            {
+                query = query.OrderByDescending(spec.OrderByDescending);
+            }
+
+            // pagination
+            if(spec.IsPagination)
+            {
+                query = query.Skip(spec.Skip).Take(spec.Take);
+            }
+
+            // loading (eager loading)
             query = spec.Includes.Aggregate(query, (query, includeExpression) => query.Include(includeExpression));
             // _context.Products.Where(criteria).Include(Includes[0])
             // _context.Products.Where(criteria).Include(Includes[0]).Include(Includes[1])

@@ -12,5 +12,15 @@ namespace Store.API.Domain.Contracts
     {
         List<Expression<Func<TEntity, object>>> Includes { get; set; }
         Expression<Func<TEntity, bool>>? Criteria { get; set; }
+        Expression<Func<TEntity, object>>? OrderBy { get; set; }
+        Expression<Func<TEntity, object>>? OrderByDescending { get; set; }
+        int Skip { get; set; }
+        int Take { get; set; }
+        bool IsPagination { get; set; }
+
+        public void ApplyPagination(int? pageIndex, int? pageSize);
+
+        public void AddOrderBy(Expression<Func<TEntity, object>>? expression);
+        public void AddOrderByDescending(Expression<Func<TEntity, object>>? expression);
     }
 }

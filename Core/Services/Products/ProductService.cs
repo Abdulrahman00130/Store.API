@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Store.API.Domain.Contracts;
 using Store.API.Domain.Entities.Products;
+using Store.API.Domain.Exceptions;
 using Store.API.Services.Abstractions.Products;
 using Store.API.Services.Specifications;
 using Store.API.Services.Specifications.Products;
+using Store.API.Shared;
 using Store.API.Shared.DTOs.Products;
 using System;
 using System.Collections.Generic;
@@ -15,17 +17,22 @@ namespace Store.API.Services.Products
 {
     public class ProductService (IUnitOfWork _unitOfWork, IMapper _mapper) : IProductService
     {
-        public async Task<IEnumerable<ProductResponse>> GetAllProductsAsync()
+        public async Task<PaginationResponse<ProductResponse>> GetAllProductsAsync(ProductQueryParameters parameters)
         {
             //var spec = new BaseSpecifications<int, Product>(null);
             //spec.Includes.Add(p => p.Brand);
             //spec.Includes.Add(p => p.Type);
 
-            var spec = new ProductWithBrandAndTypeSpecifications();
 
+            var countSpec = new ProductsCountSpecifications(parameters);
+            var count = await _unitOfWork.GetRepository<int, Product>().CountAsync(countSpec);
+
+            var spec = new ProductWithBrandAndTypeSpecifications(parameters);
             var products = await _unitOfWork.GetRepository<int, Product>().GetAllAsync(spec);
             var productsResponse = _mapper.Map<IEnumerable<ProductResponse>>(products);
-            return productsResponse;
+
+            var paginationResponse = new PaginationResponse<ProductResponse>(parameters.PageIndex, parameters.PageSize, count, productsResponse);
+            return paginationResponse;
         }
 
         public async Task<ProductResponse?> GetProductByIdAsync(int id)
@@ -33,6 +40,7 @@ namespace Store.API.Services.Products
             var spec = new ProductWithBrandAndTypeSpecifications(id);
 
             var product = await _unitOfWork.GetRepository<int, Product>().GetAsync(spec);
+            if (product is null) throw new ProductNotFoundExceptions(id);
             var productResponse = _mapper.Map<ProductResponse>(product);
             return productResponse;
         }
