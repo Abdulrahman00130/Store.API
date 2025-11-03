@@ -25,6 +25,7 @@ namespace Store.API.Persistence
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IBasketRepository, BasketRepository>();
+            services.AddScoped<ICacheRepository, CacheRepository>();
 
             services.AddSingleton<IConnectionMultiplexer>(serviceProvider =>
             ConnectionMultiplexer.Connect(configuration.GetConnectionString("RedisConnection")));
