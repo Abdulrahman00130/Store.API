@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Store.API.Domain.Contracts;
+using Store.API.Domain.Entities.Identity;
 using Store.API.Persistence;
+using Store.API.Persistence.Identity.Contexts;
 using Store.API.Services;
 using Store.API.Shared.ErrorModels;
 using Store.API.Web.Middlewares;
@@ -22,7 +25,10 @@ namespace Store.API.Web.Extensions
             services.AddInfrastructureService(configuration);
             
             services.AddApplicationServices(configuration);
-            
+
+            services.AddIdentityServices();
+
+
             services.ConfigureServices();
 
             return services;
@@ -37,6 +43,15 @@ namespace Store.API.Web.Extensions
         {
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+
+            return services;
+        }
+        private static IServiceCollection AddIdentityServices(this IServiceCollection services)
+        {
+            services.AddIdentityCore<AppUser>(options =>
+                options.User.RequireUniqueEmail = true
+            ).AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<IdentityStoreDbContext>();
 
             return services;
         }
@@ -91,7 +106,9 @@ namespace Store.API.Web.Extensions
         {
             using var scoped = app.Services.CreateScope();
             var dbInitializer = scoped.ServiceProvider.GetRequiredService<IDbInitializer>();
+
             await dbInitializer.InitializeAsync();
+            await dbInitializer.InitializeIdentityAsync();
 
             return app;
         }

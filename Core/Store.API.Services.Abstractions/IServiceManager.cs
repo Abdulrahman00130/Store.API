@@ -1,4 +1,5 @@
-﻿using Store.API.Services.Abstractions.Baskets;
+﻿using Store.API.Services.Abstractions.Auth;
+using Store.API.Services.Abstractions.Baskets;
 using Store.API.Services.Abstractions.Cache;
 using Store.API.Services.Abstractions.Products;
 using System;
@@ -14,5 +15,6 @@ namespace Store.API.Services.Abstractions
         IProductService ProductService { get; }
         IBasketService BasketService { get; }
         ICacheService CacheService { get; }
+        IAuthService AuthService { get; }
     }
 }
