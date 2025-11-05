@@ -1,19 +1,25 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Store.API.Domain.Entities.Identity;
 using Store.API.Domain.Exceptions.BadRequest;
 using Store.API.Domain.Exceptions.NotFound;
 using Store.API.Domain.Exceptions.Unauthorized;
 using Store.API.Services.Abstractions.Auth;
+using Store.API.Shared;
 using Store.API.Shared.DTOs.Auth;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Store.API.Services.Auth
 {
-    public class AuthService(UserManager<AppUser> _userManager) : IAuthService
+    public class AuthService(UserManager<AppUser> _userManager, IOptions<JwtOptions> _options) : IAuthService
     {
         public async Task<UserResponse?> LoginAsync(LoginRequest request)
         {
@@ -27,7 +33,7 @@ namespace Store.API.Services.Auth
             {
                 DisplayName = user.DisplayName,
                 Email = user.Email,
-                Token = "To Do"
+                Token = await GenerateTokenAsync(user)
             };
         }
 
@@ -48,8 +54,38 @@ namespace Store.API.Services.Auth
             {
                 DisplayName = user.DisplayName,
                 Email = user.Email,
-                Token = "To Do"
+                Token = await GenerateTokenAsync(user)
             };
+        }
+
+        private async Task<string> GenerateTokenAsync(AppUser user)
+        {
+            var authClaims = new List<Claim>
+            {
+                new Claim(ClaimTypes.GivenName, user.DisplayName),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
+            };
+
+            var roles = await _userManager.GetRolesAsync(user);
+            foreach(var role in roles)
+            { 
+                authClaims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            var jwtOptions = _options.Value;
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecurityKey));
+
+            var token = new JwtSecurityToken(
+                issuer: jwtOptions.Issuer,
+                audience: jwtOptions.Audience,
+                claims: authClaims,
+                expires: DateTime.Now.AddDays(jwtOptions.DurationInDays),
+                signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
+                );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }
