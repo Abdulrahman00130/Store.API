@@ -35,6 +35,12 @@ namespace Store.API.Web.Extensions
 
             services.AddAuthenticationServices(configuration);
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            }
+            );
+
             services.ConfigureServices();
 
             return services;
@@ -123,6 +129,8 @@ namespace Store.API.Web.Extensions
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors("AllowAll");
 
             app.UseAuthentication();
             app.UseAuthorization();
