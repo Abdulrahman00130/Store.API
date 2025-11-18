@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Store.API.Domain.Exceptions
+namespace Store.API.Domain.Exceptions.BadRequest
 {
-    public abstract class NotFoundException(string message) : Exception(message)
+    public class BadRequestException(string message) : Exception(message)
     {
     }
 }
