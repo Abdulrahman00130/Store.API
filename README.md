@@ -1,12 +1,18 @@
+=======================
 🛒 Store.API - E-Commerce Backend
+=======================
 Welcome to Store.API! This is a robust, scalable, and RESTful E-Commerce backend API built using ASP.NET Core 8.0.
 
 The project follows the Onion Architecture principles to ensure separation of concerns and maintainability. It implements advanced patterns like the Specification Pattern, Unit of Work, and Repository Pattern, along with Redis for high-performance caching and Stripe for secure payment processing.
 
+=======================
 🔭 Project Overview
+=======================
 Store.API serves as the backbone for a modern online store. It manages the entire shopping lifecycle, from product catalog browsing with complex filtering to secure checkout and order history.
 
+=======================
 Core Capabilities:
+=======================
 
 Manages Products, Brands, and Categories.
 
@@ -18,7 +24,9 @@ Processes Orders and payments via Stripe Webhooks.
 
 Implements server-side pagination, sorting, and searching.
 
+=======================
 🛠 Tech Stack
+=======================
 Frameworks & Languages
 C# 12
 
@@ -46,7 +54,9 @@ Swagger / OpenAPI (API Documentation)
 
 Dependency Injection (Built-in container)
 
+=======================
 ✨ Key Features
+=======================
 🛍️ Product Catalog
 Advanced Filtering: Filter by Brand, Type, and Search terms using the Specification Pattern.
 
@@ -78,7 +88,9 @@ Global Middleware: Centralized exception handling returning standardized ErrorDe
 
 Validation: Fluent validation of DTOs (e.g., LoginRequest, OrderRequest).
 
+=======================
 📂 Folder Structure
+=======================
 
 Store.API
 ├── Core
@@ -94,7 +106,9 @@ Store.API
 |
 └── Store.API.Web                    # Program.cs, appsettings, DI Config
 
+=======================
 🚀 Getting Started
+=======================
 Prerequisites
 .NET 8.0 SDK
 
@@ -104,7 +118,9 @@ Redis (Running locally or via Docker)
 
 Stripe Account (For payment keys)
 
+=======================
 Installation
+=======================
 Clone the repository:
 ___________________________
 git clone https://github.com/Abdulrahman00130/Store.API.git
@@ -129,14 +145,18 @@ ___________________________
 
 Apply Migrations & Seed Data The project includes a DbInitializer. Simply run the application, and it will automatically apply pending migrations and seed initial data (Products, Brands, Types) from the JSON files in Data/DataSeeding.
 
+=======================
 🧪 Testing
+=======================
 You can test the API endpoints using Swagger UI (built-in) or Postman.
 
 Authentication: Use the /api/Auth/register or /login endpoints to get a Token.
 
 Payments: To test Stripe Webhooks locally, use the Stripe CLI to forward events to https://localhost:7018/api/Payments/webhook.
 
+=======================
 📸 Screenshots
+=======================
 Swagger Documentation
 <img width="1915" height="898" alt="image" src="https://github.com/user-attachments/assets/a81ffc01-5fcf-4150-b048-bee761c98754" />
 <img width="1920" height="897" alt="image" src="https://github.com/user-attachments/assets/df7e5def-4cd0-4e32-ae4d-90cffab8b3cf" />
