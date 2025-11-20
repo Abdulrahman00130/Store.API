@@ -106,12 +106,12 @@ Stripe Account (For payment keys)
 
 Installation
 Clone the repository:
-----------------------
+___________________________
 git clone https://github.com/Abdulrahman00130/Store.API.git
-----------------------
+___________________________
 
 Configure AppSettings Update Store.API.Web/appsettings.json with your local configuration:
-----------------------
+___________________________
 "ConnectionStrings": {
   "DefaultConnection": "Server=.;Database=Store.API.App;...",
   "IdentityConnection": "Server=.;Database=Store.API.Identity;...",
@@ -125,7 +125,7 @@ Configure AppSettings Update Store.API.Web/appsettings.json with your local conf
   "Issuer": "https://localhost:7018",
   "Audience": "MyStore"
 }
-----------------------
+___________________________
 
 Apply Migrations & Seed Data The project includes a DbInitializer. Simply run the application, and it will automatically apply pending migrations and seed initial data (Products, Brands, Types) from the JSON files in Data/DataSeeding.
 
