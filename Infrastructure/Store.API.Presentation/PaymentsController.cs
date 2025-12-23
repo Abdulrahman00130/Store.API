@@ -41,13 +41,13 @@ namespace Store.API.Presentation
             if (stripeEvent.Type == EventTypes.PaymentIntentSucceeded)
             {
                 //update order status to succeeded
-                _serviceManager.PaymentService.UpdatePaymentIntentForSucceedOrFailed(paymentIntent.Id, true);
+                await _serviceManager.PaymentService.UpdatePaymentIntentForSucceedOrFailed(paymentIntent.Id, true);
 
             }
             else if (stripeEvent.Type == "payment_intent.payment_failed")
             {
                 //update order status to failed
-                _serviceManager.PaymentService.UpdatePaymentIntentForSucceedOrFailed(paymentIntent.Id, false);
+                await _serviceManager.PaymentService.UpdatePaymentIntentForSucceedOrFailed(paymentIntent.Id, false);
 
             }
             else
