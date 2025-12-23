@@ -11,44 +11,44 @@ using System.Threading.Tasks;
 
 namespace Store.API.Presentation.Attributes
 {
-    public class CacheAttribute(int timeInSec) : Attribute, IAsyncActionFilter
-    {
-        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
-        {
-            var cacheService = context.HttpContext.RequestServices.GetRequiredService<IServiceManager>().CacheService;
+    //public class CacheAttribute(int timeInSec) : Attribute, IAsyncActionFilter
+    //{
+    //    public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+    //    {
+    //        var cacheService = context.HttpContext.RequestServices.GetRequiredService<IServiceManager>().CacheService;
 
-            //Generate Key for caching in (In-Memory) database
-            var cacheKey = GetCacheKey(context.HttpContext.Request);
+    //        //Generate Key for caching in (In-Memory) database
+    //        var cacheKey = GetCacheKey(context.HttpContext.Request);
 
-            var result = await cacheService.GetAsync(cacheKey);
-            if(!string.IsNullOrEmpty(result))
-            {
-                var response = new ContentResult()
-                {
-                    Content = result,
-                    ContentType = "application/json",
-                    StatusCode = 200
-                };
-                context.Result = response;
-                return;
-            }
+    //        var result = await cacheService.GetAsync(cacheKey);
+    //        if(!string.IsNullOrEmpty(result))
+    //        {
+    //            var response = new ContentResult()
+    //            {
+    //                Content = result,
+    //                ContentType = "application/json",
+    //                StatusCode = 200
+    //            };
+    //            context.Result = response;
+    //            return;
+    //        }
 
-            var actionContext = await next.Invoke();
-            if(actionContext.Result is OkObjectResult okObjectResult)
-            {
-                await cacheService.SetAsync(cacheKey, okObjectResult.Value, TimeSpan.FromSeconds(timeInSec));
-            }
-        }
+    //        var actionContext = await next.Invoke();
+    //        if(actionContext.Result is OkObjectResult okObjectResult)
+    //        {
+    //            await cacheService.SetAsync(cacheKey, okObjectResult.Value, TimeSpan.FromSeconds(timeInSec));
+    //        }
+    //    }
 
-        private string GetCacheKey(HttpRequest request)
-        {
-            var key = new StringBuilder();
-            key.Append(request.Path);
-            foreach(var item in request.Query)
-            {
-                key.Append($"|{item.Key}-{item.Value}");
-            }
-            return key.ToString();
-        }
-    }
+    //    private string GetCacheKey(HttpRequest request)
+    //    {
+    //        var key = new StringBuilder();
+    //        key.Append(request.Path);
+    //        foreach(var item in request.Query)
+    //        {
+    //            key.Append($"|{item.Key}-{item.Value}");
+    //        }
+    //        return key.ToString();
+    //    }
+    //}
 }

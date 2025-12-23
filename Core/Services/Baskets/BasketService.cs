@@ -13,35 +13,35 @@ using System.Threading.Tasks;
 
 namespace Store.API.Services.Baskets
 {
-    public class BasketService(IBasketRepository _basketRepository, IMapper _mapper) : IBasketService
-    {
-        public async Task<BasketDto?> GetBasketAsync(string id)
-        {
-            var basket = await _basketRepository.GetBasketAsync(id);
-            if (basket is null) throw new BasketNotFoundException(id);
+    //public class BasketService(IBasketRepository _basketRepository, IMapper _mapper) : IBasketService
+    //{
+    //    public async Task<BasketDto?> GetBasketAsync(string id)
+    //    {
+    //        var basket = await _basketRepository.GetBasketAsync(id);
+    //        if (basket is null) throw new BasketNotFoundException(id);
 
-            var dto = _mapper.Map<BasketDto>(basket);
-            return dto;
-        }
+    //        var dto = _mapper.Map<BasketDto>(basket);
+    //        return dto;
+    //    }
 
-        public async Task<BasketDto?> CreateBasketAsync(BasketDto dto, TimeSpan duration)
-        {
-            var basket = _mapper.Map<CustomerBasket>(dto);
-            var result = await _basketRepository.CreateBasketAsync(basket, duration);
+    //    public async Task<BasketDto?> CreateBasketAsync(BasketDto dto, TimeSpan duration)
+    //    {
+    //        var basket = _mapper.Map<CustomerBasket>(dto);
+    //        var result = await _basketRepository.CreateBasketAsync(basket, duration);
 
-            if (result is null) throw new CreateOrUpdateBasketBadRequestException();
+    //        if (result is null) throw new CreateOrUpdateBasketBadRequestException();
 
-            return _mapper.Map<BasketDto>(result);
-        }
+    //        return _mapper.Map<BasketDto>(result);
+    //    }
 
-        public async Task<bool> DeleteBasketAsync(string id)
-        {
-            var deleted = await _basketRepository.DeleteBasketAsync(id);
+    //    public async Task<bool> DeleteBasketAsync(string id)
+    //    {
+    //        var deleted = await _basketRepository.DeleteBasketAsync(id);
 
-            if (!deleted) throw new DeleteBasketBadRequestException();
+    //        if (!deleted) throw new DeleteBasketBadRequestException();
 
-            return deleted;
-        }
+    //        return deleted;
+    //    }
 
-    }
+    //}
 }
